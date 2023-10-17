@@ -29,6 +29,13 @@ tm52cf index infile target_levels outfile
 ```
 Here `index` is the desired location of the tracer in tracer dimension of the TM5 restart file you wish to remap. The `infile` is the restart file itself. `target_levels` is the desired levels. For currently supported target levels see the help message from the tool above or the `src/hsvremapcon/levels.py`.
 
+## Examples
+
+In the `examples` directory, examples of usecases will be added. 
+
+The `tm52oifs.sh` is a shell script that shows how to remap the a TM5 restart file to the [OIFS grid](https://confluence.ecmwf.int/display/OIFS/4.+OpenIFS%3A+Grid+and+Resolution) using this tool for vertical remapping and CDO. It uses an existing grib file as a template for the target grid. Note that the datasets are not included in this repository. 
+
+
 ## Contributing
 
 ## Licensing
