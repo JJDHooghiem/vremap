@@ -144,7 +144,8 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         "console_scripts": [
-            "tm52cf=tm52cf:main",
+            "tm52cf = tm52cf:main",
+            "restart2init =restart2init:main",
         ],
     },
     # List additional URLs that are relevant to your project as a dict.
