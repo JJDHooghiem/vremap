@@ -19,7 +19,7 @@ def calcmidbin(gridres,offset=-90,tot=180):
     binsize=tot/nlatbins
     return np.arange(nlatbins) * binsize +offset + binsize /2
 
-def write2netcdf(ofile,dataset,targetgrid='L91',okey='co2',date='20000101'):
+def write2netcdf(ofile,dataset,targetgrid='L91',okey='co2',date='20000101',reverse=False):
     '''CF-compliant netcdf
       ofile is the target netcdf filename
       dataset is the data to be written
@@ -46,17 +46,24 @@ def write2netcdf(ofile,dataset,targetgrid='L91',okey='co2',date='20000101'):
         levelvar.setncattr('formula',"hyam hybm (mlev=hyam+hybm*aps)")
         levelvar.setncattr('formula_terms',"ap: hyam b: hybm ps: aps")
         levelvar.setncattr('units',"level")
-        levelvar.setncattr('positive',"down")
+        if reverse:
+            levelvar.setncattr('positive',"up")
+        else:
+            levelvar.setncattr('positive',"down")
 
         avar = ncf.createVariable('hyai','f8', ('nhyi',))
-        avar[:] = hybrid_sigma_a[targetgrid] 
         avar.setncattr('long_name','hybrid A coefficient at layer interface')
         avar.setncattr('units','Pa')
 
         bvar = ncf.createVariable('hybi','f8', ('nhyi',))
-        bvar[:] =  hybrid_sigma_b[targetgrid] 
         bvar.setncattr('long_name','hybrid B coefficient at layer interface')
         bvar.setncattr('units','1')
+        if reverse:
+            avar[:] = hybrid_sigma_a[targetgrid][::-1]
+            bvar[:] =  hybrid_sigma_b[targetgrid][::-1]
+        else: 
+            avar[:] = hybrid_sigma_a[targetgrid] 
+            bvar[:] =  hybrid_sigma_b[targetgrid] 
 
         date=dt.datetime.strptime(date,'%Y%m%d')
 
@@ -81,7 +88,10 @@ def write2netcdf(ofile,dataset,targetgrid='L91',okey='co2',date='20000101'):
         lonvar.setncattr('long_name','longitude')
 
         tracervar = ncf.createVariable('co2','f8', ('time','lev','lat','lon',))
-        tracervar[:] = dataset[np.newaxis,:,:,:]
+        if reverse:
+            tracervar[:] = dataset[np.newaxis,::-1,:,:]
+        else:
+            tracervar[:] = dataset[np.newaxis,:,:,:]
         tracervar.setncattr('units','kg kg-1')
         tracervar.setncattr('long_name','co2 mass fraction in air')
         tracervar.setncattr('Parameter ID','210061')

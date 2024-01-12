@@ -12,7 +12,9 @@ classifiers = [
     "License :: " ,  
     "Operating System :: OS Independent",
 ]
-
+[project.scripts]
+tm52cf = "tm52cf:main"
+restart2init= "restart2init:main"
 [project.urls]
 # "Homepage" = "https://github.com/pypa/sampleproject"
 # "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
