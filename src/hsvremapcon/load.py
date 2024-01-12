@@ -25,5 +25,5 @@ def load_TM5(infile,i):
     with nc.Dataset(infile) as ncf:
         sp = np.array(ncf['sp'][:,:],order='F')
         mass_in = np.array(ncf['m'][::-1,:,:],order='F')
-        tracermassfield = np.array(ncf['rm'][i,::-1,:,:],order='F')
-    return {'massfield': mass_in, 'tracermassfield' : tracermassfield , 'sp' : sp  } 
+        tracermassfield = np.array(ncf['rm'][:,::-1,:,:],order='F')
+    return {'massfield': mass_in, 'tracermassfield' : np.sum(tracermassfield,axis=0) , 'sp' : sp  } 
