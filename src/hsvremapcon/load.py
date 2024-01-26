@@ -26,9 +26,12 @@ def load_TM5(infile,i):
         sp = np.array(ncf['sp'][:,:],order='F')
         mass_in = np.array(ncf['m'][::-1,:,:],order='F')
         tracermassfield = np.array(ncf['rm'][:,::-1,:,:],order='F')
-        names=nc.chartostring(ncf['names'][:])
+        names=np.array([ n.replace(' ','') for n in nc.chartostring(ncf['names'][:])])
+    print(names)
     if 'co2_bg' in names:
+        print("Restart file from CTE forward run, summing up %s tracers to get total" % len(names) )
         tracermassfield =np.sum(tracermassfield,axis=0)
     else:
+        print("Restart file from CTE inverse run, selecting the mean" )
         tracermassfield=tracermassfield[0]
     return {'massfield': mass_in, 'tracermassfield' : tracermassfield  , 'sp' : sp  } 

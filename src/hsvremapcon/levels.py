@@ -136,7 +136,7 @@ def detect_levels(massfield):
     "Detect the vertical levels of the input field, assuming that it is the first dimension"
     levs=np.shape(massfield)[0]
     levs= 'L%s' % levs
-    print('Detected input levels system: %s' ) 
+    print('Detected input levels system: %s' % levs ) 
     return levs 
 
 def out_init(levs,datain):
@@ -147,7 +147,7 @@ def out_init(levs,datain):
     nlevs = len(hybrid_sigma_a[levs]) 
     data_out={}
     for key in datain.keys():
-        if key is not 'sp': 
+        if key!='sp': 
             dims=np.shape(datain[key])
             data_out[key]=np.zeros((nlevs,dims[1],dims[2],),'float64','F')
         else:
